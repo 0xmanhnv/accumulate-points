@@ -5,7 +5,7 @@ if ( !class_exists( 'WP_List_Table' ) ) {
 	require_once (ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 }
 
-class WPPoints_Codes_List_Table extends WP_List_Table {
+class WPPoints_Used_Codes_List_Table extends WP_List_Table {
     /**
 	 * Prepare the items for the table to process
 	 *
@@ -51,9 +51,9 @@ class WPPoints_Codes_List_Table extends WP_List_Table {
 		$columns = array(
 				'cb' => '<input type="checkbox" /> ID',
 				'code' => 'code',
-				'status' => 'Status',
 				'point' => 'Point',
-				'actions' => 'Actions'
+				'phone_number' => 'Phone number',
+				'status' => 'Status'
 		);
 
 		return $columns;
@@ -75,24 +75,20 @@ class WPPoints_Codes_List_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		return array(
-				// 'code_id' => array(
-				// 		'code_id',
-				// 		false 
-				// ),
 				'code' => array(
 						'code',
-						false
-				),
-				'status' => array(
-						'status',
 						false
 				),
 				'point' => array(
 					'point',
 					false
 				),
-				'actions' => array(
-						'actions',
+				'phone_number' => array(
+						'phone_number',
+						false
+				),
+				'status' => array(
+						'status',
 						false
 				)
 		);
@@ -106,7 +102,7 @@ class WPPoints_Codes_List_Table extends WP_List_Table {
 	private function table_data() {
 		$data = array();
 
-		$data = WPPoints::get_pending_codes( null, null, null, ARRAY_A );
+		$data = WPPoints::get_used_codes( null, null, null, ARRAY_A );
 
 		return $data;
 	}
@@ -125,25 +121,16 @@ class WPPoints_Codes_List_Table extends WP_List_Table {
 		switch ( $column_name ) {
 			case 'code_id' :
 			case 'code' :
-				return "*******";
+				return $item[$column_name];
 				break;
 			case 'point' :
 				return $item[$column_name];
 				break;
-			case 'status' :
+			case 'phone_number':
 				return $item[$column_name];
 				break;
-			case 'actions':
-				$actions = array(
-						'edit'      => sprintf('<a href="?page=%s&action=%s&code_id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['code_id']),
-						'delete'    => sprintf('<a href="?page=%s&action=%s&code_id=%s">Delete</a>',$_REQUEST['page'],'delete',$item['code_id']),
-				);
-
-				//Return the title contents
-				return sprintf('%1$s%2$s',
-						isset( $item[$column_name] ) ? $item[$column_name]:"",
-						$this->row_actions($actions, true)
-				);
+			case 'status' :
+				return $item[$column_name];
 				break;
 			default :
 				return print_r( $item, true );

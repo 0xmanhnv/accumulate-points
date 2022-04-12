@@ -30,10 +30,10 @@ class WPPoints {
 	 * @param string $order
 	 * @return Ambigous <mixed, NULL, multitype:, multitype:multitype: , multitype:Ambigous <multitype:, NULL> >
 	 */
-	public static function get_codes ( $limit = null, $order_by = null, $order = null, $output = OBJECT ) {
+	public static function get_used_codes ( $limit = null, $order_by = null, $order = null, $output = OBJECT ) {
 		global $wpdb;
 		
-		$where_str = " WHERE status != '" . WPPOINTS_STATUS_USED . "'";
+		$where_str = " WHERE status = '" . WPPOINTS_STATUS_USED . "'";
 		
 		$limit_str = "";
 		if ( isset( $limit ) && ( $limit !== null ) ) {
@@ -49,6 +49,50 @@ class WPPoints {
 		}
 
 		$result = $wpdb->get_results("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "codes" ) . $where_str . $order_by_str . $order_str . $limit_str, $output );
+
+		return $result;
+	}
+
+	/**
+	 * Get a pending codes list.
+	 * @param int $limit
+	 * @param string $order_by
+	 * @param string $order
+	 * @return Ambigous <mixed, NULL, multitype:, multitype:multitype: , multitype:Ambigous <multitype:, NULL> >
+	 */
+	public static function get_pending_codes ( $limit = null, $order_by = null, $order = null, $output = OBJECT ) {
+		global $wpdb;
+		
+		$where_str = " WHERE status = '" . WPPOINTS_STATUS_PENDING . "'";
+		
+		$limit_str = "";
+		if ( isset( $limit ) && ( $limit !== null ) ) {
+			$limit_str = " LIMIT 0 ," . $limit;
+		}
+		$order_by_str = "";
+		if ( isset( $order_by ) && ( $order_by !== null ) ) {
+			$order_by_str = " ORDER BY " . $order_by;
+		}
+		$order_str = "";
+		if ( isset( $order ) && ( $order !== null ) ) {
+			$order_str = " " . $order;
+		}
+
+		$result = $wpdb->get_results("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "codes" ) . $where_str . $order_by_str . $order_str . $limit_str, $output );
+
+		return $result;
+	}
+
+	public static function get_code ( $code = null ) {
+		global $wpdb;
+
+		$result = null;
+
+		if ( isset( $code ) && ( $code !== null ) ) {
+
+			$codes_str = " WHERE code = " . $code;
+			$result = $wpdb->get_row("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "codes" ) . $codes_str );
+		}
 
 		return $result;
 	}

@@ -20,8 +20,8 @@ define( 'WPSEO_VERSION', '1.0.1' );
 require_once ( WPPOINTS_CORE_INC . '/constants.php' );
 require_once ( WPPOINTS_CORE_INC . '/class.wp-points.php');
 require_once ( WPPOINTS_CORE_INC . '/class.wp-points-database.php' );
+require_once ( WPPOINTS_CORE_INC . '/class.wp-points-shortcodes.php' );
 require_once ( WPPOINTS_ADMIN_DIR . '/class.wp-points-admin.php' );
-require_once ( WPPOINTS_ADMIN_DIR . '/tables/class.wp-points-codes-table.php' );
 
 class WPPOINTS_Plugin {
     private static $notices = array();
@@ -41,6 +41,7 @@ class WPPOINTS_Plugin {
 		WPPoints_Admin::init();
 
 	}
+
 
     /**
 	 * Plugin activation work.
@@ -65,6 +66,7 @@ class WPPOINTS_Plugin {
             code varchar(100) NOT NULL,
             phone_number varchar(100) default NULL,
             status       varchar(10) NOT NULL DEFAULT '" . WPPOINTS_STATUS_PENDING . "',
+			point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 			PRIMARY KEY   (code_id)
 			) $charset_collate;";
 		}

@@ -24,4 +24,4 @@
 */
 
 define( 'WPPOINTS_STATUS_PENDING', 'pending' );
-define( 'WPPOINTS_STATUS_USED', 'used' );
+define( 'WPPOINTS_STATUS_USED', 'done' );

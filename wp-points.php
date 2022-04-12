@@ -91,3 +91,52 @@ if ( !defined( 'WPPOINTS_ADMIN_DIR' ) ) {
 require_once WPPOINTS_CORE_DIR . '/wp-points-main.php';
 
 WPPoints_Plugin::init();
+
+// Create the query var so that WP catches the custom /member/username url
+add_filter( 'query_vars', 'accumulate_points_rewrite_add_var' );
+function accumulate_points_rewrite_add_var( $vars ) {
+    $vars[] = 'accumulate-points';
+    return $vars;
+}
+
+// Create the rewrites
+add_action('init','accumulate_points_rewrite_rule');
+function accumulate_points_rewrite_rule() {
+    add_rewrite_tag( '%accumulate-points%', '([^&]+)' );
+    add_rewrite_rule(
+        '^accumulate-points/([^/]*)/?',
+        'index.php?accumulate-points=$matches[1]',
+        'top'
+    );
+}
+
+// Catch the URL and redirect it to a template file
+add_action( 'template_redirect', 'accumulate_points_rewrite_catch' );
+function accumulate_points_rewrite_catch($original_template) {
+    global $wp_query;
+	$plugin_url = plugins_url( 'accumulate-points.php', __FILE__ );
+	$plugin_url = substr( $plugin_url, strlen( home_url() ) + 1 );
+
+	// var_dump($wp_query->query_vars);
+	// die;
+
+    // if ( array_key_exists( 'points', $wp_query->query_vars ) ) {
+    //     include ($plugin_url);
+    //     exit();
+    // }else{
+	// 	return $original_template;
+	// }
+	if ( isset($wp_query->query_vars['name']) && $wp_query->query_vars['name'] === 'accumulate-points' || array_key_exists( 'accumulate-points', $wp_query->query_vars ) ) {
+        include ($plugin_url);
+        exit();
+    }else{
+		return $original_template;
+	}
+}
+
+// Code needed to finish the member page setup
+add_action('init','accumulate_points_rewrite');
+function accumulate_points_rewrite() {
+	global $wp_rewrite;
+	$wp_rewrite->flush_rules();
+}
