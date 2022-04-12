@@ -83,6 +83,29 @@ class WPPoints {
 		return $result;
 	}
 
+	public static function get_users ( $limit = null, $order_by = null, $order = null, $output = OBJECT ) {
+		global $wpdb;
+		
+		$where_str = " WHERE status = 1";
+		
+		$limit_str = "";
+		if ( isset( $limit ) && ( $limit !== null ) ) {
+			$limit_str = " LIMIT 0 ," . $limit;
+		}
+		$order_by_str = "";
+		if ( isset( $order_by ) && ( $order_by !== null ) ) {
+			$order_by_str = " ORDER BY " . $order_by;
+		}
+		$order_str = "";
+		if ( isset( $order ) && ( $order !== null ) ) {
+			$order_str = " " . $order;
+		}
+
+		$result = $wpdb->get_results("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "users" ) . $where_str . $order_by_str . $order_str . $limit_str, $output );
+
+		return $result;
+	}
+
 	public static function get_code ( $code = null ) {
 		global $wpdb;
 
@@ -90,8 +113,36 @@ class WPPoints {
 
 		if ( isset( $code ) && ( $code !== null ) ) {
 
-			$codes_str = " WHERE code = " . $code;
+			$codes_str = " WHERE code = '" . $code. "'";
 			$result = $wpdb->get_row("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "codes" ) . $codes_str );
+		}
+
+		return $result;
+	}
+
+	public static function get_code_with_pn ( $code = null ) {
+		global $wpdb;
+
+		$result = null;
+
+		if ( isset( $code ) && ( $code !== null ) ) {
+
+			$codes_str = " WHERE code = '" . $code . "' and phone_number is null";
+			$result = $wpdb->get_row("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "codes" ) . $codes_str );
+		}
+
+		return $result;
+	}
+
+	public static function get_user_with_pn ( $phone_number = null ) {
+		global $wpdb;
+
+		$result = null;
+
+		if ( isset( $phone_number ) && ( $phone_number !== null ) ) {
+
+			$codes_str = " WHERE phone_number = '" . $phone_number ."'";
+			$result = $wpdb->get_row("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "users" ) . $codes_str );
 		}
 
 		return $result;

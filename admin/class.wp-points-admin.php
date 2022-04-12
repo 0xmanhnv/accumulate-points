@@ -108,7 +108,10 @@ class WPPoints_Admin {
 
 		switch($tab) :
 			case 'users':
-				echo 'Settings'; //Put your HTML here
+				require_once ( WPPOINTS_ADMIN_DIR . '/tables/class.wp-points-users-table.php' );
+				$codesListTable = new WPPoints_Users_List_Table();
+				$codesListTable->prepare_items();
+				require(WPPOINTS_ADMIN_DIR . '/views/wp-points-users-table-view.php');
 				break;
 			case 'used-codes':
 				require_once ( WPPOINTS_ADMIN_DIR . '/tables/class.wp-points-used-codes-table.php' );

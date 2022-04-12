@@ -33,35 +33,40 @@ class WPPoints_Shortcodes {
 	 * Enqueues required stylesheets.
 	 */
 	public static function _print_styles() {
-		// wp_enqueue_style( 'wppoints-site', WPPOINTS_PLUGIN_URL . 'css/Site.css', array() );
-        // wp_enqueue_style( 'wppoints-bootstrap', WPPOINTS_PLUGIN_URL . 'css/bootstrap.min.css', array() );
+		wp_enqueue_style( 'wppoints-site', WPPOINTS_PLUGIN_URL . 'css/Site.css', array() );
 	}
 
     public static function form_accumulate_points($atts, $content = null) {
-        $html = '<div class="box">'
+        global $wp;
+        $success_html = "";
+        $error_html = "";
+
+        $current_url = home_url( add_query_arg( array(), $wp->request ) );
+        if(array_key_exists('error_form', $_GET)) {
+            
+            $error_html = $error_html . '<center><p style="color:red;">Có lỗi khi thêm dữ liệu!</p></center>';
+        }
+
+        if(array_key_exists('success', $_GET)) {
+            
+            $success_html = $success_html . '<center><p style="color:green;">Cộng điểm thành công!</p></center>';
+        }
+        $html = '<div class="box" id="form-accumulate-points">'
+                    .$error_html
+                    .$success_html
                     .'<div class="form-wrap">'
-                        .'<form id="form-contact" class="form" method="post">'
+                        .'<form id="accumulate-points-form" class="form" method="post" action="/accumulate-points">'
+                            .'<input type="hidden" name="ref" value="'. $current_url .'" />'
                             .'<div class="">'
-                                .'<fieldset>'
-                                    .'<div class="form-group">'
-                                        .'<input type="tel" name="phone" id="phone" required="required" placeholder="Nhập số điện thoại tích điểm tại đây" />'
-                                    .'</div>'
-                                    .'<div class="form-group">'
-                                        .'<input type="text" name="code" id="password" required="required" placeholder="Nhập mã thẻ cào tại đây" />'
-                                    .'</div>'
-                                    .'<div class="form-group" style="display: none;">'
-                                        .'<input type="text" name="commandcode" id="commandcode" value="tichdiem" />'
-                                    .'</div>'
-                                    .'<div class="form-group">'
-                                        .'<button id="btnSend" type="button" class="btn btn-primary btn-submit">'
-                                            .'Tích điểm'
-                                        .'</button>'
-                                        .'<img src="http://wordpress.local/wp-content/plugins/accumulate-points/image/ajax-loader.gif" class="loader" id="loader" style="display: none;" />'
-                                    .'</div>'
-                                    .'<div class="form-group">'
-                                        .'<p style="display: none; visibility: visible; animation-name: bounceInRight;" id="txtmess" class="text-warning wow bounceInRight animated"></p>'
-                                    .'</div>'
-                                .'</fieldset>'
+                                .'<div class="form-group">'
+                                    .'<input type="tel" name="phone_number" minlength="9" maxlength="10" id="phone" pattern="[0-9]{10}" required="required" placeholder="Nhập số điện thoại tích điểm tại đây" />'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<input type="text" name="code" id="code" required="required" placeholder="Nhập mã thẻ cào tại đây" />'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<button type="submit" class="btn btn-primary btn-submit" name="submit">Tích điểm</button>'
+                                .'</div>'
                             .'</div>'
                         .'</form>'
                     .'</div>'

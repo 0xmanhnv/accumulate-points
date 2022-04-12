@@ -77,6 +77,7 @@ class WPPOINTS_Plugin {
 			user_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
             phone_number varchar(100) default NULL,
+			status       INT(10) NOT NULL DEFAULT 1,
 			PRIMARY KEY   (user_id)
 			) $charset_collate;";
 		}
