@@ -27,6 +27,7 @@ class WPPoints_Shortcodes {
 
 		add_shortcode( 'form_accumulate_points', array( __CLASS__, 'form_accumulate_points' ) );
         add_action( 'wp_print_styles', array( __CLASS__, '_print_styles' ) );
+        add_action( 'wp_enqueue_scripts', array( __CLASS__, '_print_scripts' ) );
 	}
 
     /**
@@ -34,7 +35,14 @@ class WPPoints_Shortcodes {
 	 */
 	public static function _print_styles() {
 		wp_enqueue_style( 'wppoints-site', WPPOINTS_PLUGIN_URL . 'css/Site.css', array() );
+        wp_enqueue_style( 'animate-css', WPPOINTS_PLUGIN_URL . 'css/animate.css/animate.css', array() );
 	}
+
+    function _print_scripts() {
+        wp_enqueue_script( 'acc-point-callapi', WPPOINTS_PLUGIN_URL . 'js/acc-point-callapi.js', array( 'jquery' ) );
+        wp_enqueue_script( 'wow-js', WPPOINTS_PLUGIN_URL . 'js/wow/wow.min.js', array() );
+        wp_enqueue_script( 'shotcode-js', WPPOINTS_PLUGIN_URL . 'js/shotcode.js', array() );
+    }
 
     public static function form_accumulate_points($atts, $content = null) {
         global $wp;
@@ -51,7 +59,7 @@ class WPPoints_Shortcodes {
             
             $success_html = $success_html . '<center><p style="color:green;">Cộng điểm thành công!</p></center>';
         }
-        $html = '<div class="box" id="form-accumulate-points">'
+        $html = '<div class="box wow bounceInRight" id="form-accumulate-points">'
                     .$error_html
                     .$success_html
                     .'<div class="form-wrap">'
@@ -59,13 +67,16 @@ class WPPoints_Shortcodes {
                             .'<input type="hidden" name="ref" value="'. $current_url .'" />'
                             .'<div class="">'
                                 .'<div class="form-group">'
-                                    .'<input type="tel" name="phone_number" minlength="9" maxlength="10" id="phone" pattern="[0-9]{10}" required="required" placeholder="Nhập số điện thoại tích điểm tại đây" />'
+                                    .'<input type="tel" name="phone_number" minlength="9" maxlength="10" id="phone_number" pattern="[0-9]{10}" required="required" placeholder="Nhập số điện thoại tích điểm tại đây" />'
                                 .'</div>'
                                 .'<div class="form-group">'
                                     .'<input type="text" name="code" id="code" required="required" placeholder="Nhập mã thẻ cào tại đây" />'
                                 .'</div>'
                                 .'<div class="form-group">'
                                     .'<button type="submit" class="btn btn-primary btn-submit" name="submit">Tích điểm</button>'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<p style="display:none;" id="txtmess" class="text-warning wow bounceInRight"></p>'
                                 .'</div>'
                             .'</div>'
                         .'</form>'

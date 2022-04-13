@@ -8,18 +8,39 @@ function handle_accumulate_points() {
         );
 
         if(!empty($errors) ){
-            return wp_redirect($_POST['ref'].'?error_form=1');
+            status_header(400);
+            return json_encode([
+                "errors" => $errors,
+                "message" => "Invalid data"
+            ]);
         }
+
+        
+
         $result = complete_accumulate_points(
             $_POST['phone_number'],
             $_POST['code']
         );
 
         if(!$result){
-            return wp_redirect($_POST['ref'].'?error_form=1');
+            status_header(400);
+            return json_encode([
+                "errors" => true,
+                "message" => "Invalid data"
+            ]);
         }
 
-        return wp_redirect($_POST['ref'].'?success=1');
+        status_header(200);
+        return json_encode([
+            "errors" => false,
+            "message" => "Data add success"
+        ]);
+    }else {
+        status_header(400);
+        return json_encode([
+            "errors" => true,
+            "message" => "Invalid data"
+        ]);
     }
 }
 
@@ -74,4 +95,18 @@ function accumulate_points_validation( $phone_number, $code )  {
 }
 
 
-handle_accumulate_points();
+function main() {
+    $action_acc_point = $_GET['action_point'];
+
+    switch ($action_acc_point) {
+        case 'acc_point':
+            echo handle_accumulate_points();
+            break;
+        
+        default:
+            return json_encode([]);
+            break;
+    }
+}
+
+main();

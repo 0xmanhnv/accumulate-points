@@ -82,6 +82,17 @@ class WPPOINTS_Plugin {
 			) $charset_collate;";
 		}
 
+		$wppoints_gifts_table = WPPoints_Database::wppoints_get_table("gifts");
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '$wppoints_gifts_table'" ) != $wppoints_gifts_table ) {
+			$queries[] = "CREATE TABLE $wppoints_gifts_table (
+			id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+            gift varchar(255) default NULL,
+			status       INT(4) NOT NULL DEFAULT 1,
+			PRIMARY KEY   (id)
+			) $charset_collate;";
+		}
+
 		if ( !empty( $queries ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			dbDelta( $queries );
@@ -105,6 +116,6 @@ class WPPOINTS_Plugin {
 		global $wpdb;
 		$wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("codes") );
         $wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("users") );
-
+		$wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("gifts") );
 	}
 }
