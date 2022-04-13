@@ -90,7 +90,7 @@ class WPPoints_Shortcodes {
                                     .'<input type="tel" name="phone_number" minlength="9" maxlength="10" id="phone_number" pattern="[0-9]{10}" required="required" placeholder="Nhập số điện thoại tích điểm tại đây" />'
                                 .'</div>'
                                 .'<div class="form-group">'
-                                    .'<button type="submit" class="btn btn-primary btn-submit" name="submit">Tích điểm</button>'
+                                    .'<button type="submit" class="btn btn-primary btn-submit" name="submit">Tra cứu</button>'
                                     .'<img src="'.WPPOINTS_PLUGIN_URL.'image/ajax-loader.gif" class="loader" style="display:none;" />'
                                 .'</div>'
                                 .'<div class="form-group">'

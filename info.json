@@ -1,0 +1,21 @@
+{
+	"name" : "Accumulate points",
+	"slug" : "accumulate-points",
+	"author" : "<a href='https://manhnv.com'>Manhnv</a>",
+	"author_profile" : "https://manhnv.com",
+	"version" : "2.0",
+	"download_url" : "https://raw.githubusercontent.com/0xmanhnv/accumulate-points/main/accumulate-points.zip",
+	"requires" : "3.0",
+	"tested" : "5.8",
+	"requires_php" : "5.3",
+	"last_updated" : "2022-03-13 02:10:00",
+	"sections" : {
+		"description" : "This simple plugin does nothing, only gets updates from a custom server",
+		"installation" : "Click the activate button and that's it.",
+		"changelog" : "<h4>1.0 –  1 august 2021</h4><ul><li>Bug fixes.</li><li>Initital release.</li></ul>"
+	},
+	"banners" : {
+		"low" : "https://raw.githubusercontent.com/0xmanhnv/accumulate-points/main/image/banner-772x250.jpg",
+		"high" : "https://raw.githubusercontent.com/0xmanhnv/accumulate-points/main/image/banner-1544x500.jpg"
+	}
+}
