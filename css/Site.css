@@ -5,7 +5,7 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-#form-accumulate-points input {
+.accumulate-points input {
     /*max-width: 280px;*/
     min-width: 100%;
     border: 1px solid #189d4e;
@@ -14,27 +14,27 @@
     padding: 5px;
 }
 
-#form-accumulate-points ::-webkit-input-placeholder {
+.accumulate-points ::-webkit-input-placeholder {
     color: #bcbcbc;
     font-style: italic;
 }
 
-#form-accumulate-points :-moz-placeholder { /* Firefox 18- */
+.accumulate-points :-moz-placeholder { /* Firefox 18- */
     color: #bcbcbc;
     font-style: italic;
 }
 
-#form-accumulate-points ::-moz-placeholder { /* Firefox 19+ */
+.accumulate-points ::-moz-placeholder { /* Firefox 19+ */
     color: #bcbcbc;
     font-style: italic;
 }
 
-#form-accumulate-points :-ms-input-placeholder {
+.accumulate-points :-ms-input-placeholder {
     color: #bcbcbc;
     font-style: italic;
 }
 
-#form-accumulate-points button {
+.accumulate-points button {
     width: 100px;
     background-color: #189d4e !important;
     border-radius: 3px;
@@ -42,12 +42,12 @@
     border: 1px solid #189d4e !important;
 }
 
-#form-accumulate-points .form-group {
+.accumulate-points .form-group {
     text-align: center;
     margin-bottom: 15px;
 }
 
-#form-accumulate-points .btn {
+.accumulate-points .btn {
     display: inline-block;
     padding: 6px 12px;
     margin-bottom: 0;

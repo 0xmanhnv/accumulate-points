@@ -7,6 +7,7 @@
             $('#form-accumulate-points form').off('submit').on('submit', function (e) {
                 e.preventDefault();
                 $('#form-accumulate-points #txtmess').css('display', 'none');
+                $('#form-accumulate-points .loader').css('display', 'inline-block');
 
                 var data = new FormData();
                 data.append( 'phone_number', $('#form-accumulate-points form #phone_number').val());
@@ -25,19 +26,24 @@
 
                         if( typeof resp.errors != 'undefined' && resp.errors != true) {
                             $('#form-accumulate-points #txtmess').css('display', 'inline-block');
+                            $('#form-accumulate-points #txtmess').css('visibility', 'visible');
                             $('#form-accumulate-points #txtmess').css('color', 'green');
                             $('#form-accumulate-points #txtmess').html("Tích điểm thành công!");
                             contact.resetForm();
                         }else {
                             $('#form-accumulate-points #txtmess').css('display', 'inline-block');
+                            $('#form-accumulate-points #txtmess').css('visibility', 'visible');
                             $('#form-accumulate-points #txtmess').css('color', 'red');
                             $('#form-accumulate-points #txtmess').html("Tích điểm thất bại!");
                         }
+                        $('#form-accumulate-points .loader').css('display', 'none');
                     },
                     error: function (error) {
                         $('#form-accumulate-points #txtmess').css('display', 'inline-block');
+                        $('#form-accumulate-points #txtmess').css('visibility', 'visible');
                         $('#form-accumulate-points #txtmess').css('color', 'red');
                         $('#form-accumulate-points #txtmess').html("Tích điểm thất bại!");
+                        $('#form-accumulate-points .loader').css('display', 'none');
                     }
                 });
             });

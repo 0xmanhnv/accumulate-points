@@ -147,4 +147,18 @@ class WPPoints {
 
 		return $result;
 	}
+
+	public static function get_user_point ( $phone_number = null ) {
+		global $wpdb;
+
+		$result = null;
+
+		if ( isset( $phone_number ) && ( $phone_number !== null ) ) {
+
+			$codes_str = " WHERE phone_number = '" . $phone_number ."'";
+			$result = $wpdb->get_row("SELECT point FROM " . WPPoints_Database::wppoints_get_table( "users" ) . $codes_str );
+		}
+
+		return $result;
+	}
 }

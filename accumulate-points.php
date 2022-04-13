@@ -94,6 +94,34 @@ function accumulate_points_validation( $phone_number, $code )  {
     return null;
 }
 
+function handle_look_points() {
+    if(!isset($_GET['phone_number'])) {
+        status_header(400);
+        return json_encode([
+            "errors" => true,
+            "message" => "Invalid data"
+        ]);
+    }
+    $phone_number = $_GET['phone_number'];
+
+    $point = WPPoints::get_user_point($phone_number);
+
+    if(isset($point)) {
+        status_header(200);
+        return json_encode([
+            "errors" => false,
+            "message" => "Success",
+            "data" => [
+                "point" => $point->point
+            ]
+        ]);
+    }
+    return json_encode([
+        "errors" => true,
+        "message" => "Invalid data"
+    ]);
+}
+
 
 function main() {
     $action_acc_point = $_GET['action_point'];
@@ -102,7 +130,9 @@ function main() {
         case 'acc_point':
             echo handle_accumulate_points();
             break;
-        
+        case 'point_look':
+            echo handle_look_points();
+            break;
         default:
             return json_encode([]);
             break;
