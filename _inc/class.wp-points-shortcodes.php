@@ -27,6 +27,7 @@ class WPPoints_Shortcodes {
 
 		add_shortcode( 'form_accumulate_points', array( __CLASS__, 'form_accumulate_points' ) );
         add_shortcode( 'form_look_points', array( __CLASS__, 'form_look_points' ) );
+        add_shortcode( 'form_reward_exchange', array( __CLASS__, 'form_reward_exchange' ) );
 
         add_action( 'wp_print_styles', array( __CLASS__, '_print_styles' ) );
         add_action( 'wp_enqueue_scripts', array( __CLASS__, '_print_scripts' ) );
@@ -99,6 +100,64 @@ class WPPoints_Shortcodes {
                             .'</div>'
                         .'</form>'
                     .'</div>'
+                .'</div>';
+
+        return $html;
+    }
+
+    public static function form_reward_exchange($atts, $content = null) {
+        $html = '<div class="wow bounceInRight">'
+                    .'<center><h5>Đổi quà trực tiếp tại đây (miễn phí)</h5></center>'
+                    .'<div class="box accumulate-points">'
+                        .'<div class="form-wrap">'
+                            .'<form id="bform-contact" class="form" method="post">'
+                                .'<div class="form-group">'
+                                    .'<input type="text" name="phone_number" id="dphone" required placeholder="Nhập số điện thoại để đổi quà">'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<input type="text" name="name" id="dname" required placeholder="Nhập tên để đổi quà">'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<input type="text" name="address" id="daddress" required placeholder="Nhập địa chỉ để đổi quà">'
+                                .'</div>'
+                                .'<div class="form-group" style="display:none;">'
+                                    .'<input type="text" name="commandcode" id="dcommandcode" value="doiqua">'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<select class="form-control" id="ddiem" style="border-color: #189d4e;">'
+                                        .'<option>Chọn số điểm cần đổi</option>'
+                                        .'<option value="06">Đổi 06 điểm</option>'
+                                        .'<option value="12">Đổi 12 điểm</option>'
+                                        .'<option value="18">Đổi 18 điểm</option>'
+                                        .'<option value="24">Đổi 24 điểm</option>'
+                                        .'<option value="30">Đổi 30 điểm</option>'
+                                        .'<option value="36">Đổi 36 điểm</option>'
+                                    .'</select>'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<select class="form-control" id="dmaqua" style="border-color: #189d4e;">'
+                                        .'<option>Chọn quà</option>'
+                                        .'<option class="06" value="E1">Đổi 1 hộp</option> '                                             
+                                        .'<option class="12" value="E2">Đổi 02 hộp </option>'
+                                        .'<option class="18" value="E3">Đổi 03 hộp </option>'
+                                        .'<option class="24" value="E4">Đổi 04 hộp </option>'
+                                        .'<option class="30" value="E5">Đổi 05 hộp </option>'
+                                        .'<option class="36" value="E6">Đổi 06 hộp </option>'
+                                    .'</select>'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<button id="dbtnSend" type="button" class="btn btn-primary btn-submit">'
+                                        .'Đổi quà'
+                                    .'</button>'
+                                    .'<img src="'.WPPOINTS_PLUGIN_URL.'image/ajax-loader.gif" class="loader" id="dloader" style="display:none;" />'
+                                .'</div>'
+                                .'<div class="form-group">'
+                                    .'<p style="display:none;visibility:unset;" id="dtxtmess" class="text-warning"></p>'
+                                .'</div>'
+                            .'</form>'
+                        .'</div>'
+                    .'</div>'
+                    .'<p style="text-align:center;">Quà sẽ được chuyển đến cho bạn trong thời gian sớm nhất</p>'
                 .'</div>';
 
         return $html;

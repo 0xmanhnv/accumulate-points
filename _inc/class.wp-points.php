@@ -161,4 +161,33 @@ class WPPoints {
 
 		return $result;
 	}
+
+
+	public static function insert_data_codes($data) {
+		try{
+			global $wpdb;
+
+			$sql = "INSERT INTO ". WPPoints_Database::wppoints_get_table( "codes" ) . " (code, point) VALUES ";
+			$codes_str = "";
+			$result = null;
+
+			foreach($data as $dt) {
+				$codes_str = $codes_str . "(". $dt['code'] . "," . $dt['point'] . "),";
+			}
+			$sql = $sql . $codes_str;
+			$sql = trim($sql, ",");
+			$sql = $sql . "ON DUPLICATE KEY UPDATE code=code";
+
+			$result = $wpdb->query($sql);
+			
+			return $result;
+		}catch(Exception $e) {
+			return [];
+		}
+	}
+
+	public static function delete_code($code_id) {
+		global $wpdb;
+		return $wpdb->delete( WPPoints_Database::wppoints_get_table( "codes" ), array( 'code_id' => $code_id ) );
+	}
 }

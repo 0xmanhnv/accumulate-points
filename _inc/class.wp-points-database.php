@@ -37,6 +37,9 @@ class WPPoints_Database {
 			case "gifts":
 				$result = $wpdb->prefix . self::$prefix . "gifts";
 				break;
+			case "reward_exchanges":
+				$result = $wpdb->prefix . self::$prefix . "reward_exchanges";
+				break;
 		}
 		return $result;
 	}

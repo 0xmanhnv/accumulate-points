@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: Accumulate points
  * Version:     1.0.0
- * Plugin URI:  https://manhnv.com
+ * Plugin URI:  https://github.com/0xmanhnv/accumulate-points
  * Description: Accumulate points.
  * Author:      Manhnv (AKA 0xmanhnv)
  * Author URI:  https://manhnv.com
@@ -18,9 +18,9 @@
  * License:     GPL v3
  * Requires at least: 5.8
  * Requires PHP: 5.6.20
- *
  * WC requires at least: 3.0
  * WC tested up to: 6.1
+ * Update URI: https://github.com/0xmanhnv/accumulate-points
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

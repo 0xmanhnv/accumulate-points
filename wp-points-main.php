@@ -63,7 +63,7 @@ class WPPOINTS_Plugin {
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$wppoints_codes_table'" ) != $wppoints_codes_table ) {
 			$queries[] = "CREATE TABLE $wppoints_codes_table (
 			code_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            code varchar(100) NOT NULL,
+            code varchar(100) NOT NULL UNIQUE,
             phone_number varchar(100) default NULL,
             status       varchar(10) NOT NULL DEFAULT '" . WPPOINTS_STATUS_PENDING . "',
 			point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
@@ -89,6 +89,18 @@ class WPPOINTS_Plugin {
             point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
             gift varchar(255) default NULL,
 			status       INT(4) NOT NULL DEFAULT 1,
+			PRIMARY KEY   (id)
+			) $charset_collate;";
+		}
+
+		$wppoints_reward_exchanges_table = WPPoints_Database::wppoints_get_table("reward_exchanges");
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '$wppoints_reward_exchanges_table'" ) != $wppoints_reward_exchanges_table ) {
+			$queries[] = "CREATE TABLE $wppoints_reward_exchanges_table (
+			id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            phone_number varchar(100) default NULL,
+			address varchar(255) NOT NULL,
+			address TEXT NOT NULL,
+			status       varchar(10) NOT NULL DEFAULT '" . WPPOINTS_REWARD_EXCHANGE_PENDING . "',
 			PRIMARY KEY   (id)
 			) $charset_collate;";
 		}

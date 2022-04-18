@@ -36,4 +36,20 @@
 
 <hr>
 
-<h2><?php _e( 'Import codes with csv', 'Import codes with csv' ); ?></h2>		
+<h2><?php _e( 'Import codes with csv', 'Import codes with csv' ); ?></h2>
+<p style="color: red;"><?php if(isset($success_file) && $success_file === true) { echo 'Add code success'; } ?></p>
+<table width="600">
+    <form action="<?php echo $_SERVER["PHP_SELF"]. "?page=wp-points-add-code"; ?>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="submit-add-code-csv">
+        <tr>
+            <td width="20%">Select file CSV</td>
+            <td width="80%"><input type="file" name="file" id="file" /></td>
+        </tr>
+
+        <tr>
+            <td>Submit</td>
+            <td><p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Submit"></p></td>
+        </tr>
+
+    </form>
+</table>	
