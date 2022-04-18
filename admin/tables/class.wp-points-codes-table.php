@@ -135,8 +135,8 @@ class WPPoints_Codes_List_Table extends WP_List_Table {
 				break;
 			case 'actions':
 				$actions = array(
-						'edit'      => sprintf('<a href="?page=%s&action=%s&code_id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['code_id']),
-						'delete'    => sprintf('<a href="?page=%s&action=%s&code_id=%s">Delete</a>',$_REQUEST['page'],'delete_code',$item['code_id']),
+						// 'edit'      => sprintf('<a href="?page=%s&action=%s&code_id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['code_id']),
+						'delete'    => sprintf('<a href="?page=%s&action=%s&code_id=%s">Delete</a>',$_REQUEST['page'],'delete_code',$item['code_id'])
 				);
 
 				//Return the title contents

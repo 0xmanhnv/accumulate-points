@@ -53,7 +53,8 @@ class WPPoints_Used_Codes_List_Table extends WP_List_Table {
 				'code' => 'code',
 				'point' => 'Point',
 				'phone_number' => 'Phone number',
-				'status' => 'Status'
+				'status' => 'Status',
+				'updated_at' => 'Giờ tích điểm'
 		);
 
 		return $columns;
@@ -90,6 +91,10 @@ class WPPoints_Used_Codes_List_Table extends WP_List_Table {
 				'status' => array(
 						'status',
 						false
+				),
+				'updated_at' => array(
+					'status',
+					false
 				)
 		);
 	}
@@ -130,6 +135,9 @@ class WPPoints_Used_Codes_List_Table extends WP_List_Table {
 				return $item[$column_name];
 				break;
 			case 'status' :
+				return $item[$column_name];
+				break;
+			case 'updated_at' :
 				return $item[$column_name];
 				break;
 			default :

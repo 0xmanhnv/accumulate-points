@@ -122,8 +122,8 @@ class WPPoints_Users_List_Table extends WP_List_Table {
 				break;
 			case 'actions':
 				$actions = array(
-						'edit'      => sprintf('<a href="?page=%s&action=%s&user_id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['user_id']),
-						'delete'    => sprintf('<a href="?page=%s&action=%s&user_id=%s">Delete</a>',$_REQUEST['page'],'delete',$item['user_id']),
+						// 'edit'      => sprintf('<a href="?page=%s&action=%s&user_id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['user_id']),
+						'delete'    => sprintf('<a href="?page=%s&action=%s&user_id=%s">Delete</a>',$_REQUEST['page'],'delete_user',$item['user_id']),
 				);
 
 				//Return the title contents

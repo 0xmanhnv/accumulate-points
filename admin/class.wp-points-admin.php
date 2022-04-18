@@ -123,6 +123,11 @@ class WPPoints_Admin {
 					$code_id = $_GET['code_id'];
 					WPPoints::delete_code($code_id);
 					break;
+				case 'delete_user':
+					$user_id = $_GET['user_id'];
+					WPPoints::delete_user($user_id);
+					$_GET['point_type'] = "users";
+					break;
 				
 				default:
 					# code...

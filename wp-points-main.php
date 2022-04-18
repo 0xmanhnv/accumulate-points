@@ -67,6 +67,8 @@ class WPPOINTS_Plugin {
             phone_number varchar(100) default NULL,
             status       varchar(10) NOT NULL DEFAULT '" . WPPOINTS_STATUS_PENDING . "',
 			point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY   (code_id)
 			) $charset_collate;";
 		}
@@ -78,6 +80,8 @@ class WPPOINTS_Plugin {
             point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
             phone_number varchar(100) default NULL,
 			status       INT(10) NOT NULL DEFAULT 1,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY   (user_id)
 			) $charset_collate;";
 		}
