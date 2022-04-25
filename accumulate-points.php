@@ -133,6 +133,9 @@ function main() {
         case 'point_look':
             echo handle_look_points();
             break;
+        case 'reward_exchange':
+            echo "dssddssd";
+            die;
         default:
             return json_encode([]);
             break;

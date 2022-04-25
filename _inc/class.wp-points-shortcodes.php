@@ -110,7 +110,7 @@ class WPPoints_Shortcodes {
                     .'<center><h5>Đổi quà trực tiếp tại đây (miễn phí)</h5></center>'
                     .'<div class="box accumulate-points">'
                         .'<div class="form-wrap">'
-                            .'<form id="bform-contact" class="form" method="post">'
+                            .'<form id="bform-contact" class="form" method="post" action="/accumulate-points?action_point=reward_exchange">'
                                 .'<div class="form-group">'
                                     .'<input type="text" name="phone_number" id="dphone" required placeholder="Nhập số điện thoại để đổi quà">'
                                 .'</div>'
