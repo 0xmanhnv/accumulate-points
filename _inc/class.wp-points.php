@@ -120,6 +120,21 @@ class WPPoints {
 		return $result;
 	}
 
+	
+	public static function get_reward_exchange ( $status = null ) {
+		global $wpdb;
+
+		$result = null;
+		$str = "";
+		if ($status) {
+			$str = " WHERE STATUS = ". "'". $status. "'";
+		}
+
+		$result = $wpdb->get_results("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "reward_exchanges" ). $str, ARRAY_A );
+
+		return $result;
+	}
+
 	public static function get_code_with_pn ( $code = null ) {
 		global $wpdb;
 
@@ -194,5 +209,45 @@ class WPPoints {
 	public static function delete_user($user_id) {
 		global $wpdb;
 		return $wpdb->delete( WPPoints_Database::wppoints_get_table( "users" ), array( 'user_id' => $user_id ) );
+	}
+
+	public static function insert_reward_exchange ($data, $point) {
+		global $wpdb;
+
+		$result = null;
+
+			$codes_str = "";
+			$codes_str = $codes_str . "(". "'".$data['phone_number']."'" . "," . "'".$data['user']."'" . "," . "'".$data['address']."'" . "," . "'".$data['gif']."'" . ")";
+			$sql = "INSERT INTO ". WPPoints_Database::wppoints_get_table( "reward_exchanges" ) . " (phone_number, name, address, gif) VALUES ";
+			$sql = $sql . $codes_str;
+			$result = $wpdb->query($sql);
+			$newPoint = $point - (int)$data['point'];
+			$sql = "UPDATE ". WPPoints_Database::wppoints_get_table( "users" ) . " SET POINT = ". "'".$newPoint."'". "WHERE PHONE_NUMBER=". "'".$data['phone_number']."'";
+			$result = $wpdb->query($sql);
+			return $result;
+
+
+		return $result;
+	}
+
+	public static function get_gifts () {
+		global $wpdb;
+
+		$result = null;
+
+		$sql = "SELECT * FROM " . WPPoints_Database::wppoints_get_table( "gifts" );
+		$result = $wpdb->get_results($sql);
+
+		return $result;
+	}
+
+	public static function approve_exchange ($id) {
+		global $wpdb;
+
+		$result = null;
+		$sql = "UPDATE ". WPPoints_Database::wppoints_get_table( "reward_exchanges" ) . " SET STATUS = ". "'".WPPOINTS_REWARD_EXCHANGE_DONE."'". " WHERE ID=". "'".$id."'";
+		$result = $wpdb->query($sql);
+
+		return $result;
 	}
 }

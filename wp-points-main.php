@@ -102,8 +102,9 @@ class WPPOINTS_Plugin {
 			$queries[] = "CREATE TABLE $wppoints_reward_exchanges_table (
 			id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             phone_number varchar(100) default NULL,
-			address varchar(255) NOT NULL,
+			name varchar(255) NOT NULL,
 			address TEXT NOT NULL,
+			gif varchar(255) NOT NULL,
 			status       varchar(10) NOT NULL DEFAULT '" . WPPOINTS_REWARD_EXCHANGE_PENDING . "',
 			PRIMARY KEY   (id)
 			) $charset_collate;";

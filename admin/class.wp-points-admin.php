@@ -27,6 +27,8 @@ class WPPoints_Admin {
 	public static function init () {
 		add_action( 'admin_notices', array( __CLASS__, 'admin_notices' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ), 40 );
+		add_action( 'admin_init', array( __CLASS__, 'export_reward_exchange' ) );
+		// header_remove();
 	}
 
 	public static function admin_notices() {
@@ -58,6 +60,57 @@ class WPPoints_Admin {
 			'wp-points-add-code',
 			array( __CLASS__, 'wppoints_add_codes_html')
 		);
+
+		add_submenu_page(
+			'wp-points',
+			__( 'Export', 'Export Reward Exchange' ),
+			__( 'Export', 'Export Reward Exchange' ),
+			'manage_options',
+			'wp-points-export',
+			array( __CLASS__, 'export_reward_html')
+		);
+	}
+
+	public static function export_reward_html() { 
+		require(WPPOINTS_ADMIN_DIR . '/views/wp-points-export-exchange-view.php');
+	}
+
+	public static function export_reward_exchange () {
+		if (isset ($_GET['action']) && $_GET['action'] == 'export_reward_exchange') {
+			global $wpdb;
+
+			$result = null;
+			$sql = "SELECT * FROM ". WPPoints_Database::wppoints_get_table( "reward_exchanges" );
+			$result = $wpdb->get_results($sql, ARRAY_A);
+			$wp_filename = "reward_exchange_".date("d-m-y").".csv";
+		
+			// Open file
+			$wp_file = fopen($wp_filename,"w");
+			$fields = array('Phone number', 'Name', 'Address', 'Gift', 'Status');
+			fputcsv($wp_file, $fields);
+			// loop for insert data into CSV file
+			foreach ($result as $key => $statementFet)
+			{
+				$wp_array = array(
+					"phone_number"=> $statementFet['phone_number'],
+					"name"=> $statementFet['name'],
+					"address"=> $statementFet['address'],
+					"gift"=> $statementFet['gif'],
+					"status"=> $statementFet['status'],
+				);
+				fputcsv($wp_file,$wp_array);
+			}
+			
+			// Close file
+			fclose($wp_file);
+			
+			// download csv file
+			header("Content-Description: File Transfer");
+			header("Content-Disposition: attachment; filename=".$wp_filename);
+			header("Content-Type: application/csv;");
+			readfile($wp_filename);
+			exit;
+		}
 	}
 
 	public static function wppoints_add_codes_html() {
@@ -128,6 +181,10 @@ class WPPoints_Admin {
 					WPPoints::delete_user($user_id);
 					$_GET['point_type'] = "users";
 					break;
+				case 'aprrove_exchange':
+					$id = $_GET['id'];
+					WPPoints::approve_exchange($id);
+					break;
 				
 				default:
 					# code...
@@ -150,6 +207,18 @@ class WPPoints_Admin {
 				$codesListTable = new WPPoints_Used_Codes_List_Table();
 				$codesListTable->prepare_items();
 				require(WPPOINTS_ADMIN_DIR . '/views/wp-points-used-codes-table-view.php');
+				break;
+			case 'reward-exchange':
+				require_once ( WPPOINTS_ADMIN_DIR . '/tables/class.wp-points-reward-exchange-table.php' );
+				$codesListTable = new WPPoints_Reward_Exchange_List_Table();
+				$codesListTable->prepare_items();
+				require(WPPOINTS_ADMIN_DIR . '/views/wp-points-reward-exchange-table-view.php');
+				break;
+			case 'reward-exchange-approved':
+				require_once ( WPPOINTS_ADMIN_DIR . '/tables/class.wp-points-reward-exchange-approved-table.php' );
+				$codesListTable = new WPPoints_Reward_Exchange_List_Table();
+				$codesListTable->prepare_items();
+				require(WPPOINTS_ADMIN_DIR . '/views/wp-points-reward-exchange-table-view.php');
 				break;
 			default:
 				require_once ( WPPOINTS_ADMIN_DIR . '/tables/class.wp-points-codes-table.php' );
