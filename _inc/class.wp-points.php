@@ -120,6 +120,20 @@ class WPPoints {
 		return $result;
 	}
 
+	public static function get_gift_point ( $gift = null, $point = null ) {
+		global $wpdb;
+
+		$result = null;
+
+		if ( isset( $gift ) && ( $gift !== null ) && ( $point ) && ( $point !== null ) ) {
+
+			$codes_str = " WHERE gift = '" . $gift. "'". " AND point = '" . $point. "'";
+			$result = $wpdb->get_row("SELECT * FROM " . WPPoints_Database::wppoints_get_table( "gifts" ) . $codes_str );
+		}
+
+		return $result;
+	}
+
 	
 	public static function get_reward_exchange ( $status = null ) {
 		global $wpdb;
@@ -201,6 +215,28 @@ class WPPoints {
 		}
 	}
 
+	public static function insert_data_gifts($data) {
+		try{
+			global $wpdb;
+
+			$sql = "INSERT INTO ". WPPoints_Database::wppoints_get_table( "gifts" ) . " (gift, point) VALUES ";
+			$codes_str = "";
+			$result = null;
+			foreach($data as $dt) {
+				$codes_str = $codes_str . "(". $dt['gift'] . "," . $dt['point'] . "),";
+			}
+			$sql = $sql . $codes_str;
+			$sql = trim($sql, ",");
+			$sql = $sql . " ON DUPLICATE KEY UPDATE gift=gift, point=point";
+
+			$result = $wpdb->query($sql);
+			
+			return $result;
+		}catch(Exception $e) {
+			return [];
+		}
+	}
+
 	public static function delete_code($code_id) {
 		global $wpdb;
 		return $wpdb->delete( WPPoints_Database::wppoints_get_table( "codes" ), array( 'code_id' => $code_id ) );
@@ -217,7 +253,7 @@ class WPPoints {
 		$result = null;
 
 			$codes_str = "";
-			$codes_str = $codes_str . "(". "'".$data['phone_number']."'" . "," . "'".$data['user']."'" . "," . "'".$data['address']."'" . "," . "'".$data['gif']."'" . ")";
+			$codes_str = $codes_str . "(". "'".$data['phone_number']."'" . "," . "'".$data['user']."'" . "," . "'".$data['address']."'" . "," . "'".$data['gift']."'" . ")";
 			$sql = "INSERT INTO ". WPPoints_Database::wppoints_get_table( "reward_exchanges" ) . " (phone_number, name, address, gif) VALUES ";
 			$sql = $sql . $codes_str;
 			$result = $wpdb->query($sql);

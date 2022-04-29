@@ -49,7 +49,7 @@ jQuery(document).ready(function ($) {
                 data.append('user', $('#reward-exchange-form #name').val());
                 data.append('address', $('#reward-exchange-form #address').val());
                 data.append('point', $('#reward-exchange-form #ddiem').val());
-                data.append('gif', $('#reward-exchange-form #dmaqua').val());
+                data.append('gift', $('#reward-exchange-form #dmaqua').val());
                 data.append('submit', 'submit');
 
                 var url = "/accumulate-points?action_point=reward_exchange"
@@ -83,6 +83,8 @@ jQuery(document).ready(function ($) {
                         errorCode = JSON.parse(error.responseText).code
                         if (errorCode == 1) {
                             var messTxt = "Bạn không đủ điểm!"
+                        } else {
+                            var messTxt = "Vui lòng điền đầy đủ thông tin!"
                         }
                         $('#reward-exchange-form #txtmess').show();
                         $('#reward-exchange-form #txtmess').css('visibility', 'visible');
