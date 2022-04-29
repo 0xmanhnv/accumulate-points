@@ -92,11 +92,11 @@ function accumulate_points_validation( $phone_number, $code )  {
     return null;
 }
 
-function reward_exchange_validation( $phone_number, $name, $address, $point, $gif)  {
+function reward_exchange_validation( $phone_number, $name, $address, $point, $gift)  {
     global $reg_errors;
     $reg_errors = new WP_Error;
 
-    if ( empty( $phone_number ) || empty( $name ) || empty( $address ) || empty( $point ) || empty( $gif ) ) {
+    if ( empty( $phone_number ) || empty( $name ) || empty( $address ) || empty( $point ) || $point == 'null' || empty( $gift ) || $gift == 'null' ) {
         $reg_errors->add('field', 'Required form field is missing');
     }
 
@@ -135,12 +135,13 @@ function handle_look_points() {
 
 function handle_reward_exchange() {
     if ( isset($_POST['submit'] ) ) {
+        // var_dump($_POST);
         $errors = reward_exchange_validation(
             $_POST['phone_number'],
             $_POST['user'],
             $_POST['address'],
             $_POST['point'],
-            $_POST['gif']
+            $_POST['gift']
         );
 
         if(!empty($errors) ){
@@ -169,10 +170,10 @@ function handle_reward_exchange() {
             "user" => $_POST['user'],
             "address" => $_POST['address'],
             "point" => $_POST['point'],
-            "gif" => $_POST['gif']
+            "gift" => $_POST['gift']
         );
         
-        WPPoints::insert_reward_exchange($data, $_POST['point']);
+        WPPoints::insert_reward_exchange($data, (int)$point->point);
         status_header(200);
         return json_encode([
             "errors" => false,
