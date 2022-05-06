@@ -254,10 +254,10 @@ class WPPoints {
 
 			$codes_str = "";
 			$codes_str = $codes_str . "(". "'".$data['phone_number']."'" . "," . "'".$data['user']."'" . "," . "'".$data['address']."'" . "," . "'".$data['gift']."'" . ")";
-			$sql = "INSERT INTO ". WPPoints_Database::wppoints_get_table( "reward_exchanges" ) . " (phone_number, name, address, gif) VALUES ";
+			$sql = "INSERT INTO ". WPPoints_Database::wppoints_get_table( "reward_exchanges" ) . " (phone_number, name, address, gift) VALUES ";
 			$sql = $sql . $codes_str;
 			$result = $wpdb->query($sql);
-			$newPoint = $point - (int)$data['point'];
+			$newPoint = $point - $data['point'];
 			$sql = "UPDATE ". WPPoints_Database::wppoints_get_table( "users" ) . " SET POINT = ". "'".$newPoint."'". "WHERE PHONE_NUMBER=". "'".$data['phone_number']."'";
 			$result = $wpdb->query($sql);
 			return $result;

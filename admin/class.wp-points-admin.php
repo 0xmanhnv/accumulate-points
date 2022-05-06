@@ -389,7 +389,7 @@ class WPPoints_Admin {
 		if(empty($errors)){
 
 			$values['code'] = esc_html($_POST['code']);
-			$values['point'] = (int) $_POST['point'];
+			$values['point'] = $_POST['point'];
 
 			$result = $wpdb->insert( WPPoints_Database::wppoints_get_table('codes'), $values );
 
@@ -574,7 +574,7 @@ class WPPoints_Admin {
 		if(empty($errors)){
 
 			$values['gift'] = esc_html($_POST['gift']);
-			$values['point'] = (int) $_POST['point'];
+			$values['point'] = $_POST['point'];
 
 			$result = $wpdb->insert( WPPoints_Database::wppoints_get_table('gifts'), $values );
 

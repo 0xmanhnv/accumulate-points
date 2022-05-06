@@ -66,7 +66,7 @@ function complete_accumulate_points($phone_number, $code) {
         $wpdb->insert(WPPoints_Database::wppoints_get_table('users'), $data);
     }else{
         $wpdb->update(WPPoints_Database::wppoints_get_table('users'), array(
-            'point' => (int) $old_user->point + $code_old->point
+            'point' => $old_user->point + $code_old->point
         ), array(
             'phone_number' => $phone_number,
         ));
@@ -157,7 +157,7 @@ function handle_reward_exchange() {
 
     $point = WPPoints::get_user_point($phone_number);
     if(isset($point)) {
-        if ((int)$point->point < (int)$_POST['point']) {
+        if ($point->point < $_POST['point']) {
             status_header(400);
             return json_encode([
                 "errors" => true,
@@ -173,7 +173,7 @@ function handle_reward_exchange() {
             "gift" => $_POST['gift']
         );
         
-        WPPoints::insert_reward_exchange($data, (int)$point->point);
+        WPPoints::insert_reward_exchange($data, $point->point);
         status_header(200);
         return json_encode([
             "errors" => false,

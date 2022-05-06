@@ -23,7 +23,7 @@ jQuery(document).ready(function ($) {
                         $('#ddiem').append(`<option value="${value.point}">Đổi ${value.point} điểm</option>`);
 
                         for (let i = 0; i < value.gifts.length; i++) {
-                            htmlGifts += `<option class="${value.point}" value="${value.gifts[i]}">Đổi ${value.gifts[i]} hộp</option>`
+                            htmlGifts += `<option class="class-${value.point}" value="${value.gifts[i]}">Đổi ${value.gifts[i]} hộp</option>`
                         }
                         // value.gifts.forEach(function (element) {
                         //     htmlGifts += `<option class="${value.point}" value="${element}">Đổi ${element} hộp</option>`
@@ -43,7 +43,7 @@ jQuery(document).ready(function ($) {
                     return this.defaultSelected;
                 });
                 $("#dmaqua").children('option').hide();
-                $("#dmaqua").children("option[class^=" + $(this).val() + "]").show();
+                $("#dmaqua").children("option[class^='class-" + $(this).val() + "']").show();
             })
         },
 
