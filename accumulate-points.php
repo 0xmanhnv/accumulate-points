@@ -196,12 +196,23 @@ function handle_reward_exchange() {
 }
 
 function handle_get_gifs() {
-    $gifts = WPPoints::get_gifts();
+    $points = WPPoints::get_gifts();
     $arrayGifs = [];
-    if(isset($gifts)) {
-        foreach($gifts as $gift) {
-            array_push($arrayGifs, ['point' => $gift->point, 'gif' => $gift->gift]);
+    if(isset($points)) {
+        foreach($points as $point) {
+            $gifts = WPPoints::get_gifts_from_point($point->point);
+            $arrGifts = [];
+            foreach($gifts as $gift) {
+                array_push($arrGifts, $gift->gift);
+            }
+            
+            array_push($arrayGifs, [
+                "point" => $point->point,
+                "gifts" =>  $arrGifts
+            ]);
         }
+
+        // var_dump($arrayGifs);
         status_header(200);
         return json_encode([
             "errors" => false,

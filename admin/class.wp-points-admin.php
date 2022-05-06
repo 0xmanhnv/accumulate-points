@@ -54,6 +54,15 @@ class WPPoints_Admin {
 
 		add_submenu_page(
 			'wp-points',
+			__( 'Gifts', 'Gifts' ),
+			__( 'Gifts', 'Gifts' ),
+			'manage_options',
+			'wp-points-list-gifts',
+			array( __CLASS__, 'wppoints_list_gifts_html')
+		);
+
+		add_submenu_page(
+			'wp-points',
 			__( 'Add Code', 'Add Code' ),
 			__( 'Add Code', 'Add Code' ),
 			'manage_options',
@@ -80,6 +89,26 @@ class WPPoints_Admin {
 		);
 	}
 
+	public static function wppoints_list_gifts_html() {
+		// check user capabilities
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// include head
+		require_once(WPPOINTS_ADMIN_DIR . '/views/gifts/wp-points-gifts-head-view.php');
+
+		require_once ( WPPOINTS_ADMIN_DIR . '/tables/class.wp-points-gifts-table.php' );
+		$codesListTable = new WPPoints_Gifts_List_Table();
+		$codesListTable->prepare_items();
+		// include head
+		require_once(WPPOINTS_ADMIN_DIR . '/views/gifts/wp-points-gifts-table-view.php');
+
+		// include head
+		require_once(WPPOINTS_ADMIN_DIR . '/views/gifts/wp-points-gifts-foot-view.php');
+
+	}
+
 	public static function add_gift_html () { 
 		// check user capabilities
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -87,6 +116,8 @@ class WPPoints_Admin {
 		}
 		$plugin_name = "WP-POINTS";
 		$errors = array();
+		
+
 		if ( isset( $_GET["action"] ) || isset( $_POST["action"] )) {
 			if(isset($_GET["action"])){
 				$action = $_GET["action"];
@@ -114,6 +145,46 @@ class WPPoints_Admin {
 					require(WPPOINTS_ADMIN_DIR . '/views/wp-points-add-gifts-form-view.php');
 					break;
 				
+				case 'edit-gift':
+					$gift_id = $_GET["gift_id"];
+					$gift = WPPoints::get_gift_from_id($gift_id);
+					if(!$gift) {
+						$errors = array(
+							"gift_id" => __("Gift not found", "wp-points")
+						);
+					}
+					require(WPPOINTS_ADMIN_DIR . '/views/wp-points-edit-gifts-form-view.php');
+					break;
+				case 'edit-gift-post':
+					$result = WPPoints::update_gift_from_id(
+						$_POST['id'],
+						$_POST['gift'],
+						$_POST['point']
+					);
+
+					if($result) {
+						$success = true;
+						// /wp-admin/admin.php?page=wp-points-add-gift&action=edit-gift&gift_id=1
+						$gift_id = $_POST["id"];
+						$gift = WPPoints::get_gift_from_id($gift_id);
+						if(!$gift) {
+							$errors = array(
+								"gift_id" => __("Gift not found", "wp-points")
+							);
+						}
+						require(WPPOINTS_ADMIN_DIR . '/views/wp-points-edit-gifts-form-view.php');
+					} else {
+						$errors = "Update error";
+						$gift_id = $_POST["id"];
+						$gift = WPPoints::get_gift_from_id($gift_id);
+						if(!$gift) {
+							$errors = array(
+								"gift_id" => __("Gift not found", "wp-points")
+							);
+						}
+						require(WPPOINTS_ADMIN_DIR . '/views/wp-points-edit-gifts-form-view.php');
+					}
+					break;
 				default:
 					require(WPPOINTS_ADMIN_DIR . '/views/wp-points-add-gifts-form-view.php');
 					break;

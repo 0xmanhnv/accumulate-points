@@ -66,7 +66,7 @@ class WPPOINTS_Plugin {
             code varchar(100) NOT NULL UNIQUE,
             phone_number varchar(100) default NULL,
             status       varchar(10) NOT NULL DEFAULT '" . WPPOINTS_STATUS_PENDING . "',
-			point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+			point FLOAT UNSIGNED NOT NULL DEFAULT 0,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY   (code_id)
@@ -77,7 +77,7 @@ class WPPOINTS_Plugin {
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$wppoints_users_table'" ) != $wppoints_users_table ) {
 			$queries[] = "CREATE TABLE $wppoints_users_table (
 			user_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+            point FLOAT UNSIGNED NOT NULL DEFAULT 0,
             phone_number varchar(100) default NULL,
 			status       INT(10) NOT NULL DEFAULT 1,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -90,7 +90,7 @@ class WPPOINTS_Plugin {
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$wppoints_gifts_table'" ) != $wppoints_gifts_table ) {
 			$queries[] = "CREATE TABLE $wppoints_gifts_table (
 			id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            point BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+            point FLOAT UNSIGNED NOT NULL DEFAULT 0,
             gift varchar(255) default NULL,
 			status       INT(4) NOT NULL DEFAULT 1,
 			PRIMARY KEY   (id)
@@ -104,7 +104,7 @@ class WPPOINTS_Plugin {
             phone_number varchar(100) default NULL,
 			name varchar(255) NOT NULL,
 			address TEXT NOT NULL,
-			gif varchar(255) NOT NULL,
+			gift varchar(255) NOT NULL,
 			status       varchar(10) NOT NULL DEFAULT '" . WPPOINTS_REWARD_EXCHANGE_PENDING . "',
 			PRIMARY KEY   (id)
 			) $charset_collate;";

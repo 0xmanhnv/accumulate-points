@@ -18,8 +18,17 @@ jQuery(document).ready(function ($) {
                     var listRewardExchange = resp.data.gifts
                     console.log(listRewardExchange)
                     $.each( listRewardExchange, function( index, value ){
-                        $('#ddiem').append(`<option value="${value.point}">Đổi ${value.point} điểm</option>`)
-                        $('#dmaqua').append(`<option class="${value.point}" value="${value.gif}">Đổi ${value.gif} hộp</option>`)
+                        console.log(value.gifts)
+                        var htmlGifts = '';
+                        $('#ddiem').append(`<option value="${value.point}">Đổi ${value.point} điểm</option>`);
+
+                        for (let i = 0; i < value.gifts.length; i++) {
+                            htmlGifts += `<option class="${value.point}" value="${value.gifts[i]}">Đổi ${value.gifts[i]} hộp</option>`
+                        }
+                        // value.gifts.forEach(function (element) {
+                        //     htmlGifts += `<option class="${value.point}" value="${element}">Đổi ${element} hộp</option>`
+                        // });
+                        $('#dmaqua').append(htmlGifts);
                     });
                 },
                 error: function (error) {
