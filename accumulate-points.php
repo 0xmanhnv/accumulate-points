@@ -15,8 +15,6 @@ function handle_accumulate_points() {
             ]);
         }
 
-        
-
         $result = complete_accumulate_points(
             $_POST['phone_number'],
             $_POST['code']
@@ -68,7 +66,7 @@ function complete_accumulate_points($phone_number, $code) {
         $wpdb->insert(WPPoints_Database::wppoints_get_table('users'), $data);
     }else{
         $wpdb->update(WPPoints_Database::wppoints_get_table('users'), array(
-            'point' => (int) $old_user->point + $code_old->point
+            'point' => $old_user->point + $code_old->point
         ), array(
             'phone_number' => $phone_number,
         ));
@@ -87,6 +85,19 @@ function accumulate_points_validation( $phone_number, $code )  {
 
     if ( 10 != strlen( $phone_number ) ) {
         $reg_errors->add( 'phone_number', 'Phone_number invalid' );
+    }
+
+    if ( is_wp_error( $reg_errors ) ) return $reg_errors->get_error_messages();
+
+    return null;
+}
+
+function reward_exchange_validation( $phone_number, $name, $address, $point, $gift)  {
+    global $reg_errors;
+    $reg_errors = new WP_Error;
+
+    if ( empty( $phone_number ) || empty( $name ) || empty( $address ) || empty( $point ) || $point == 'null' || empty( $gift ) || $gift == 'null' ) {
+        $reg_errors->add('field', 'Required form field is missing');
     }
 
     if ( is_wp_error( $reg_errors ) ) return $reg_errors->get_error_messages();
@@ -122,6 +133,102 @@ function handle_look_points() {
     ]);
 }
 
+function handle_reward_exchange() {
+    if ( isset($_POST['submit'] ) ) {
+        // var_dump($_POST);
+        $errors = reward_exchange_validation(
+            $_POST['phone_number'],
+            $_POST['user'],
+            $_POST['address'],
+            $_POST['point'],
+            $_POST['gift']
+        );
+
+        if(!empty($errors) ){
+            status_header(400);
+            return json_encode([
+                "errors" => $errors,
+                "message" => "Invalid data"
+            ]);
+        }
+    }
+    
+    $phone_number = $_POST['phone_number'];
+
+    $point = WPPoints::get_user_point($phone_number);
+    if(isset($point)) {
+        if ($point->point < $_POST['point']) {
+            status_header(400);
+            return json_encode([
+                "errors" => true,
+                "message" => "not enough points",
+                "code" => NOT_ENOUGH_POINT_CODE
+            ]);
+        }
+        $data = array(
+            "phone_number" => $_POST['phone_number'],
+            "user" => $_POST['user'],
+            "address" => $_POST['address'],
+            "point" => $_POST['point'],
+            "gift" => $_POST['gift']
+        );
+        
+        WPPoints::insert_reward_exchange($data, $point->point);
+        status_header(200);
+        return json_encode([
+            "errors" => false,
+            "message" => "Success",
+            "reward_exchange" => true
+        ]);
+    } else {
+        status_header(400);
+            return json_encode([
+                "errors" => true,
+                "message" => "not enough points",
+                "code" => NOT_ENOUGH_POINT_CODE
+            ]);
+    }
+    status_header(400);
+    return json_encode([
+        "errors" => true,
+        "message" => "Invalid data"
+    ]);
+}
+
+function handle_get_gifs() {
+    $points = WPPoints::get_gifts();
+    $arrayGifs = [];
+    if(isset($points)) {
+        foreach($points as $point) {
+            $gifts = WPPoints::get_gifts_from_point($point->point);
+            $arrGifts = [];
+            foreach($gifts as $gift) {
+                array_push($arrGifts, $gift->gift);
+            }
+            
+            array_push($arrayGifs, [
+                "point" => $point->point,
+                "gifts" =>  $arrGifts
+            ]);
+        }
+
+        // var_dump($arrayGifs);
+        status_header(200);
+        return json_encode([
+            "errors" => false,
+            "message" => "Success",
+            "data" => [
+                "gifts" => $arrayGifs
+            ]
+        ]);
+    }
+    status_header(400);
+    return json_encode([
+        "errors" => true,
+        "message" => "Invalid data"
+    ]);
+}
+
 
 function main() {
     $action_acc_point = $_GET['action_point'];
@@ -134,8 +241,11 @@ function main() {
             echo handle_look_points();
             break;
         case 'reward_exchange':
-            echo "dssddssd";
-            die;
+            echo handle_reward_exchange();
+            break;
+        case 'get_gifs':
+            echo handle_get_gifs();
+            break;
         default:
             return json_encode([]);
             break;
