@@ -95,6 +95,18 @@ class WPPoints_Admin {
 			return;
 		}
 
+		$action = $_GET['action'];
+
+		if( $action == 'delete_gift' ) {
+			$gift_id = $_GET["gift_id"];
+			$gift = WPPoints::delete_gift($gift_id);
+			if(!$gift) {
+				$errors = array(
+					"gift_id" => __("Gift not found", "wp-points")
+				);
+			}
+		}
+
 		// include head
 		require_once(WPPOINTS_ADMIN_DIR . '/views/gifts/wp-points-gifts-head-view.php');
 

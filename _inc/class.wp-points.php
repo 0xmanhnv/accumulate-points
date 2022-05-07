@@ -242,6 +242,11 @@ class WPPoints {
 		return $wpdb->delete( WPPoints_Database::wppoints_get_table( "codes" ), array( 'code_id' => $code_id ) );
 	}
 
+	public static function delete_gift($gift_id) {
+		global $wpdb;
+		return $wpdb->delete( WPPoints_Database::wppoints_get_table( "gifts" ), array( 'id' => $gift_id ) );
+	}
+
 	public static function delete_user($user_id) {
 		global $wpdb;
 		return $wpdb->delete( WPPoints_Database::wppoints_get_table( "users" ), array( 'user_id' => $user_id ) );
