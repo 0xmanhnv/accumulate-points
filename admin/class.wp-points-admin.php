@@ -300,6 +300,43 @@ class WPPoints_Admin {
 
 	}
 
+	public static function handle_reject_exchange($id) {
+		$reward_exchange = WPPoints::get_reward_exchange_from_id($id);
+		if(!$reward_exchange) {
+			return array(
+				"reward_exchange_id" => __("Reward exchange not found", "wp-points")
+			);
+		}
+
+		
+
+		$gift = WPPoints::get_gift_from_id($reward_exchange->gift_id);
+		if(!$gift) {
+			return array(
+				"gift_id" => __("Gift not found", "wp-points")
+			);
+		}
+
+		// var_dump($gift);
+		// var_dump($reward_exchange);
+		// die;
+
+		// update point user
+		$user_update_result = WPPoints::update_user_points($reward_exchange->phone_number, $gift->point, $reward_exchange->id, "add");
+		if(!$user_update_result) {
+			return array(
+				"user_update" => __("User update failed", "wp-points")
+			);
+		}
+		
+		// update reward exchange
+		$result = WPPoints::reject_exchange($id);
+		if($result) {
+			return true;
+		}
+	}
+
+
     public static function wppoints_codes_html() {
 		// check user capabilities
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -325,6 +362,10 @@ class WPPoints_Admin {
 				case 'aprrove_exchange':
 					$id = $_GET['id'];
 					WPPoints::approve_exchange($id);
+					break;
+				case 'reject_exchange':
+					$id = $_GET['id'];
+					WPPoints_Admin::handle_reject_exchange($id);
 					break;
 				
 				default:
@@ -427,6 +468,7 @@ class WPPoints_Admin {
 				}else {
 
 					$uploadedfile = $_FILES['file'];
+					
 					$upload_overrides = array(
 						'test_form' => false
 					);
@@ -435,6 +477,7 @@ class WPPoints_Admin {
 						// echo __( 'File is valid, and was successfully uploaded.', 'textdomain' ) . "\n";
 						// var_dump( $movefile );
 						$data = WPPoints_Admin::handle_csv_file( $movefile );
+						
 						// handle save csv to database
 						if(count($data) > 0) {
 							WPPoints::insert_data_codes($data);

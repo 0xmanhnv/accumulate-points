@@ -51,7 +51,9 @@ class WPPoints_Users_List_Table extends WP_List_Table {
 		$columns = array(
 				'cb' => '<input type="checkbox" /> ID',
 				'phone_number' => 'Phone Number',
-				'point' => 'Point',
+				'total_points' => 'Total points',
+				'point' => 'Remaining points',
+				'points_changed' => 'Points Changed',
 				'actions' => 'Actions'
 		);
 
@@ -82,6 +84,10 @@ class WPPoints_Users_List_Table extends WP_List_Table {
 					'point',
 					false
 				),
+				'points_changed' => array(
+					'points_changed',
+					false
+				),
 				'actions' => array(
 						'actions',
 						false
@@ -97,7 +103,9 @@ class WPPoints_Users_List_Table extends WP_List_Table {
 	private function table_data() {
 		$data = array();
 
-		$data = WPPoints::get_users( null, null, null, ARRAY_A );
+		$search = $_REQUEST['s'];
+
+		$data = WPPoints::get_users( null, null, null, ARRAY_A, $search);
 
 		return $data;
 	}
@@ -113,12 +121,22 @@ class WPPoints_Users_List_Table extends WP_List_Table {
 	 * @return Mixed
 	 */
 	public function column_default( $item, $column_name ) {
+		
 		switch ( $column_name ) {
 			case 'phone_number' :
 				return $item[$column_name];
 				break;
+			case 'total_points' :
+				$total_points = WPPoints::get_total_points( $item['phone_number'] );
+				return $total_points;
+				break;
 			case 'point' :
 				return $item[$column_name];
+				break;
+			case 'points_changed' :
+				$phone_number = $item['phone_number'];
+				$point = WPPoints::points_changed($phone_number);
+				return $point;
 				break;
 			case 'actions':
 				$actions = array(

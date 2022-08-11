@@ -136,6 +136,7 @@ function handle_look_points() {
 function handle_reward_exchange() {
     if ( isset($_POST['submit'] ) ) {
         // var_dump($_POST);
+        // die;
         $errors = reward_exchange_validation(
             $_POST['phone_number'],
             $_POST['user'],
@@ -152,12 +153,16 @@ function handle_reward_exchange() {
             ]);
         }
     }
+
+    $gift_id = $_POST['gift'];
+    // TODO: get gift id from database
+    $gift = WPPoints::get_gift_from_id($gift_id);
     
     $phone_number = $_POST['phone_number'];
 
     $point = WPPoints::get_user_point($phone_number);
     if(isset($point)) {
-        if ($point->point < $_POST['point']) {
+        if ($point->point < $gift->point) {
             status_header(400);
             return json_encode([
                 "errors" => true,
@@ -169,17 +174,27 @@ function handle_reward_exchange() {
             "phone_number" => $_POST['phone_number'],
             "user" => $_POST['user'],
             "address" => $_POST['address'],
-            "point" => $_POST['point'],
-            "gift" => $_POST['gift']
+            "point" => $gift->point,
+            "gift" => $gift->gift, // gift name
+            "gift_id" => $gift->id, // gift id
         );
         
-        WPPoints::insert_reward_exchange($data, $point->point);
-        status_header(200);
-        return json_encode([
-            "errors" => false,
-            "message" => "Success",
-            "reward_exchange" => true
-        ]);
+        $result = WPPoints::insert_reward_exchange($data, $point->point);
+        if($result){
+            status_header(200);
+            return json_encode([
+                "errors" => false,
+                "message" => "Success",
+                "reward_exchange" => true
+            ]);
+        }else{
+            status_header(500);
+                return json_encode([
+                    "errors" => true,
+                    "message" => "Failed!",
+                    "code" => 500
+                ]);
+        }
     } else {
         status_header(400);
             return json_encode([
@@ -203,7 +218,10 @@ function handle_get_gifs() {
             $gifts = WPPoints::get_gifts_from_point($point->point);
             $arrGifts = [];
             foreach($gifts as $gift) {
-                array_push($arrGifts, $gift->gift);
+                $arrGifts[] = [
+                    "gift" => $gift->gift,
+                    "id" => $gift->id
+                ];
             }
             
             array_push($arrayGifs, [

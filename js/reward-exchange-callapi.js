@@ -16,17 +16,17 @@ jQuery(document).ready(function ($) {
                 success: function (response) {
                     var resp = JSON.parse(response);
                     var listRewardExchange = resp.data.gifts
-                    console.log(listRewardExchange)
+                    // console.log(listRewardExchange)
                     $.each( listRewardExchange, function( index, value ){
-                        console.log(value.gifts)
+                        // console.log(value.gifts)
                         var htmlGifts = '';
                         $('#ddiem').append(`<option value="${value.point}">Đổi ${value.point} điểm</option>`);
 
                         for (let i = 0; i < value.gifts.length; i++) {
-                            htmlGifts += `<option class="class-${value.point}" value="${value.gifts[i]}">Đổi ${value.gifts[i]} hộp</option>`
+                            htmlGifts += `<option class="class-${value.point}" value="${value.gifts[i].id}">${value.gifts[i].gift}</option>`
                         }
                         // value.gifts.forEach(function (element) {
-                        //     htmlGifts += `<option class="${value.point}" value="${element}">Đổi ${element} hộp</option>`
+                        //     htmlGifts += `<option class="${value.point}" value="${element}">${element}</option>`
                         // });
                         $('#dmaqua').append(htmlGifts);
                     });
@@ -92,7 +92,9 @@ jQuery(document).ready(function ($) {
                         errorCode = JSON.parse(error.responseText).code
                         if (errorCode == 1) {
                             var messTxt = "Bạn không đủ điểm!"
-                        } else {
+                        }else if(errorCode == 500){
+                            var messTxt = "Lỗi hệ thống!"
+                        }else {
                             var messTxt = "Vui lòng điền đầy đủ thông tin!"
                         }
                         $('#reward-exchange-form #txtmess').show();
