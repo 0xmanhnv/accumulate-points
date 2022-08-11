@@ -101,7 +101,9 @@ class WPPoints_Gifts_List_Table extends WP_List_Table {
 	private function table_data() {
 		$data = array();
 
-		$data = WPPoints::get_gifts_table( null, null, null, ARRAY_A );
+		$search = $_REQUEST['s'];
+
+		$data = WPPoints::get_gifts_table( null, null, null, ARRAY_A, $search);
 
 		return $data;
 	}

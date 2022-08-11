@@ -53,11 +53,11 @@ class WPPoints_Reward_Exchange_List_Table extends WP_List_Table {
 				'phone_number' => 'Phone number',
 				'name' => 'Name',
 				'address' => 'Address',
-        'gif' => 'Gift',
+        		'gift' => 'Gift',
+				'point' => 'Point',
 				'status' => 'Status',
 				'actions' => 'Actions'
 		);
-
 		return $columns;
 	}
 
@@ -86,17 +86,17 @@ class WPPoints_Reward_Exchange_List_Table extends WP_List_Table {
 					false
 				),
 				'phone_number' => array(
-						'phone_number',
-						false
+					'phone_number',
+					false
 				),
 				'status' => array(
-						'status',
-						false
+					'status',
+					false
 				),
 				'actions' => array(
 					'actions',
 					false
-			)
+				)
 		);
 	}
 
@@ -108,8 +108,9 @@ class WPPoints_Reward_Exchange_List_Table extends WP_List_Table {
 	private function table_data() {
 		$data = array();
 
-		$data = WPPoints::get_reward_exchange(WPPOINTS_REWARD_EXCHANGE_PENDING);
+		$search = $_REQUEST['s'];
 
+		$data = WPPoints::get_reward_exchange(WPPOINTS_REWARD_EXCHANGE_PENDING, $search);
 		return $data;
 	}
 
@@ -138,7 +139,7 @@ class WPPoints_Reward_Exchange_List_Table extends WP_List_Table {
 			case 'address':
 				return $item[$column_name];
 				break;
-			case 'gif' :
+			case 'gift' :
 				return $item[$column_name];
 				break;
 			case 'status' :
@@ -146,7 +147,8 @@ class WPPoints_Reward_Exchange_List_Table extends WP_List_Table {
 				break;
 			case 'actions':
 				$actions = array(
-					'edit'    => sprintf('<a href="?page=%s&action=%s&id=%s">Approve</a>',$_REQUEST['page'],'aprrove_exchange',$item['id'])
+					'Approve'    => sprintf('<a href="?page=%s&point_type=reward-exchange&action=%s&id=%s">Approve</a>',$_REQUEST['page'],'aprrove_exchange',$item['id']),
+					'Reject'  => sprintf('<a href="?page=%s&point_type=reward-exchange&action=%s&id=%s" style="color:red;">Reject</a>',$_REQUEST['page'],'reject_exchange',$item['id'])
 				);
 				return sprintf('%1$s%2$s',
 					isset( $item[$column_name] ) ? $item[$column_name]:"",

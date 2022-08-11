@@ -8,7 +8,7 @@
  *
  * @wordpress-plugin
  * Plugin Name: Accumulate points
- * Version:     1.0.2
+ * Version:     1.2.1
  * Plugin URI:  https://github.com/0xmanhnv/accumulate-points
  * Description: Accumulate points.
  * Author:      Manhnv (AKA 0xmanhnv)

@@ -4,5 +4,10 @@
     <div class="manage add">
         <a class="add button" href="tesst">tesst</a>
     </div> -->
+    <form action="/wp-admin/admin.php?page=wp-points&point_type=users" method="GET">
+        <?php $codesListTable->search_box('Tìm', esc_attr($_REQUEST['users']) ); ?>
+        <input type="hidden" name="point_type" value="<?= esc_attr($_REQUEST['point_type']) ?>"/>
+        <input type="hidden" name="page" value="<?= esc_attr($_REQUEST['page']) ?>"/>
+    </form>
     <?php $codesListTable->display(); ?>
 </div>

@@ -130,10 +130,10 @@ class WPPOINTS_Plugin {
 	 */
 	public static function uninstall() {
 
-		global $wpdb;
-		$wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("codes") );
-        $wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("users") );
-		$wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("gifts") );
-		$wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("reward_exchanges") );
+		// global $wpdb;
+		// $wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("codes") );
+        // $wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("users") );
+		// $wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("gifts") );
+		// $wpdb->query('DROP TABLE IF EXISTS ' . WPPoints_Database::wppoints_get_table("reward_exchanges") );
 	}
 }

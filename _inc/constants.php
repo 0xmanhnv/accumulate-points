@@ -27,4 +27,5 @@ define( 'WPPOINTS_STATUS_PENDING', 'pending' );
 define( 'WPPOINTS_STATUS_USED', 'done' );
 define( 'WPPOINTS_REWARD_EXCHANGE_PENDING', 'pending');
 define( 'WPPOINTS_REWARD_EXCHANGE_DONE', 'done');
+define( 'WPPOINTS_REWARD_EXCHANGE_REJECTED', 'rejected');
 define( 'NOT_ENOUGH_POINT_CODE', 1);

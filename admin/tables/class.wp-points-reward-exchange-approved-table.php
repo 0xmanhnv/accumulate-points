@@ -53,7 +53,7 @@ class WPPoints_Reward_Exchange_List_Table extends WP_List_Table {
 				'phone_number' => 'Phone number',
 				'name' => 'Name',
 				'address' => 'Address',
-        'gif' => 'Gift',
+        'gift' => 'Gift',
 				'status' => 'Status',
 		);
 
@@ -133,7 +133,7 @@ class WPPoints_Reward_Exchange_List_Table extends WP_List_Table {
 			case 'address':
 				return $item[$column_name];
 				break;
-			case 'gif' :
+			case 'gift' :
 				return $item[$column_name];
 				break;
 			case 'status' :
